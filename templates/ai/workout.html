@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}AI Workout Plans{% endblock %}
+
+{% block content %}
+<div class="ai-container">
+    <h1>AI Workout Plans</h1>
+    
+    <div class="ai-card">
+        <form method="POST">
+            <div class="form-group">
+                <label for="prompt">What kind of workout plan are you looking for?</label>
+                <textarea id="prompt" name="prompt" rows="4" placeholder="e.g., I need a 30-minute home workout for beginners..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Get Plan</button>
+        </form>
+    </div>
+    
+    {% if plan %}
+    <div class="ai-response">
+        <h2>Your Personalized Workout Plan</h2>
+        <div class="response-content">
+            {{ plan|safe }}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

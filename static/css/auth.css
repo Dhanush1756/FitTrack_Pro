@@ -1,0 +1,191 @@
+/*
+================================================
+FINAL Corrected CSS for Auth Pages
+================================================
+*/
+:root {
+    --primary-color: #4f46e5;
+    --primary-color-light: #eef2ff;
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.auth-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: url('../images/fitness_bg.jpeg') no-repeat center center/cover;
+    position: relative;
+    color: white;
+}
+
+.auth-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(17, 24, 39, 0.75);
+    z-index: 1;
+}
+
+.auth-header,
+.auth-container,
+.auth-footer-main {
+    position: relative;
+    z-index: 2;
+}
+
+.auth-header {
+    padding: 1.5rem 2.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.auth-header a {
+    text-decoration: none;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: opacity 0.3s;
+}
+
+.auth-header a:hover {
+    opacity: 0.8;
+}
+
+.auth-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(31, 41, 55, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 3rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    /* Center align all content within the card */
+}
+
+.auth-card h1 {
+    font-size: 2.25rem;
+    font-weight: 600;
+    margin-bottom: 2.5rem;
+    color: #ffffff;
+}
+
+/* --- THIS IS THE FIX --- */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.form-group input {
+    /* Make the input box less than full width */
+    width: 90%;
+    /* The text-align:center on .auth-card will now center the box itself */
+    padding: 0.85rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.1);
+    font-size: 1rem;
+    color: #ffffff;
+    transition: all 0.3s;
+    text-align: center;
+    /* This centers the text INSIDE the input box */
+}
+
+/* --- END OF FIX --- */
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5);
+}
+
+.form-group.remember {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Center the remember me checkbox and text */
+    gap: 0.5rem;
+}
+
+.form-group.remember label {
+    margin-bottom: 0;
+}
+
+.form-group.remember input {
+    width: auto;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.85rem 1.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-size: 1.1rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #4338ca;
+    transform: translateY(-2px);
+}
+
+.auth-footer {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.auth-footer a {
+    color: var(--primary-color-light);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.auth-footer-main {
+    padding: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    width: 100%;
+}

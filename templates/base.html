@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FitTrack Pro{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard_plans.css') }}">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dark-mode.css') }}">
+    
+    {% block head %}{% endblock %}
+</head>
+<body data-theme="{{ 'dark' if current_user.is_authenticated and current_user.dark_mode else 'light' }}">
+
+    {% include 'components/sidebar.html' %}
+
+    <main class="main-content">
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="dark-mode-switch">
+                <input type="checkbox" id="dark-mode-switch" {% if current_user.dark_mode %}checked{% endif %} />
+                <div class="slider round">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                </div>
+            </label>
+        </div>
+
+        {% include 'components/flash_messages.html' %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <button id="ai-chat-button" class="ai-chat-button">
+        <i class="fas fa-robot"></i>
+    </button>
+    <div id="ai-chat-modal" class="ai-chat-modal-overlay" style="display: none;">
+        <div class="ai-chat-modal-content">
+            <div class="ai-chat-header">
+                <h3>Chat with FitBot</h3>
+                <button id="ai-chat-close" class="ai-chat-close-btn">&times;</button>
+            </div>
+            <div id="ai-chat-messages" class="ai-chat-messages">
+                <div class="ai-chat-message assistant">
+                    Hi {{ current_user.name.split()[0] }}! How can I help you with your fitness goals today?
+                </div>
+            </div>
+            <div class="ai-chat-footer">
+                <form id="ai-chat-form">
+                    <input type="text" id="ai-chat-input" placeholder="Ask about workouts, diet, etc..." autocomplete="off" required>
+                    <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dark-mode.js') }}"></script>
+
+</body>
+</html>

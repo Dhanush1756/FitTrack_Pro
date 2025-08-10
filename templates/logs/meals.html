@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Log Meal{% endblock %}
+
+{% block content %}
+<div class="form-container card">
+    <h1 style="margin-bottom: 2rem;">Log a Meal</h1>
+    
+    <form id="meal-log-form" method="POST">
+        <div class="form-group">
+            <label for="name">What did you eat?</label>
+            <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="name" name="name" required placeholder="e.g., 1 bowl of oatmeal with berries">
+                <button type="button" id="get-nutrition-btn" class="btn btn-secondary">Get Info</button>
+            </div>
+            <small id="ai-status" style="margin-top: 0.5rem; display: block; min-height: 1.2em;"></small>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="calories">Calories (kcal)</label>
+                <input type="number" id="calories" name="calories" required step="any">
+            </div>
+            <div class="form-group">
+                <label for="protein">Protein (g)</label>
+                <input type="number" id="protein" name="protein" step="any">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="carbs">Carbs (g)</label>
+                <input type="number" id="carbs" name="carbs" step="any">
+            </div>
+            <div class="form-group">
+                <label for="fat">Fat (g)</label>
+                <input type="number" id="fat" name="fat" step="any">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="notes">Notes (optional)</label>
+            <textarea id="notes" name="notes" rows="3"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Log This Meal</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const getInfoBtn = document.getElementById('get-nutrition-btn');
+    const foodNameInput = document.getElementById('name');
+    const statusText = document.getElementById('ai-status');
+
+    getInfoBtn.addEventListener('click', async function() {
+        const foodName = foodNameInput.value;
+
+        if (!foodName) {
+            statusText.textContent = "Please enter a food description first.";
+            statusText.style.color = 'var(--danger-color)';
+            return;
+        }
+
+        // --- Provide user feedback and prevent multiple clicks ---
+        statusText.textContent = "Asking the AI chef... 🧑‍🍳";
+        statusText.style.color = 'var(--text-light-color)';
+        getInfoBtn.disabled = true;
+        getInfoBtn.textContent = '...';
+
+        try {
+            const response = await fetch('/api/get-nutrition-info', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ description: foodName })
+            });
+
+            if (!response.ok) {
+                // Handle server-side errors (like 500, 404 etc.)
+                throw new Error('Server responded with an error.');
+            }
+
+            const result = await response.json();
+
+            if (result.success) {
+                document.getElementById('calories').value = result.data.calories || 0;
+                document.getElementById('protein').value = result.data.protein || 0;
+                document.getElementById('carbs').value = result.data.carbs || 0;
+                document.getElementById('fat').value = result.data.fat || 0;
+                statusText.textContent = "Nutrition info filled automatically!";
+                statusText.style.color = 'var(--success-color)';
+            } else {
+                statusText.textContent = `Error: ${result.error}`;
+                statusText.style.color = 'var(--danger-color)';
+            }
+
+        } catch (error) {
+            // This will catch actual network errors (e.g., no internet)
+            console.error('Fetch Error:', error);
+            statusText.textContent = "A network error occurred. Please try again.";
+            statusText.style.color = 'var(--danger-color)';
+        } finally {
+            // --- Always restore the button's state ---
+            getInfoBtn.disabled = false;
+            getInfoBtn.textContent = 'Get Info';
+        }
+    });
+});
+</script>
+{% endblock %}

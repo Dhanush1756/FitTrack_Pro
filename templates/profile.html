@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Your Profile{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Profile Settings</h1>
+</div>
+
+<div class="profile-container">
+    <form method="post" enctype="multipart/form-data" id="profileForm" style="display: contents;">
+        
+        <div class="card profile-photo-card">
+            <img src="{{ url_for('static', filename='images/profile_photos/' + (user.profile_photo or 'default.png')) }}"
+                alt="Profile Photo" class="profile-photo" id="profile-preview">
+            
+            <input type="file" name="profile_photo" id="profile-photo-input" accept="image/*" hidden>
+            <label for="profile-photo-input" class="btn btn-secondary edit-mode" style="display: none;">
+                <i class="fas fa-camera"></i> Change Photo
+            </label>
+        </div>
+
+        <div class="card profile-details-card">
+            <div id="viewMode">
+                <div class="form-group"><label>Full Name</label><p>{{ user.name or 'Not set' }}</p></div>
+                <div class="form-group"><label>Email</label><p>{{ user.email or 'Not set' }}</p></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Age</label><p>{{ user.age or 'Not set' }}</p></div>
+                    <div class="form-group"><label>Gender</label><p>{{ user.gender.capitalize() if user.gender else 'Not set' }}</p></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Height</label><p>{{ user.height or 'Not set' }} cm</p></div>
+                    <div class="form-group"><label>Weight</label><p>{{ user.weight or 'Not set' }} kg</p></div>
+                </div>
+                <div class="form-group"><label>Goal Weight</label><p>{{ user.goal_weight or 'Not set' }} kg</p></div>
+                <div class="form-group"><label>Diet Preference</label><p>{{ user.diet_preference.replace('_', ' ').title() if user.diet_preference else 'Not set' }}</p></div>
+                <div class="form-group"><label>Medical Conditions</label><p>{{ user.medical_conditions or 'None specified' }}</p></div>
+                <div class="form-group"><label>Past Surgeries</label><p>{{ user.past_surgeries or 'None specified' }}</p></div>
+            </div>
+
+            <div id="editMode" style="display: none;">
+                <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" name="name" value="{{ user.name or '' }}" required></div>
+                <div class="form-group"><label for="email">Email</label><input type="email" id="email" name="email" value="{{ user.email or '' }}" required></div>
+                <div class="form-row">
+                    <div class="form-group"><label for="age">Age</label><input type="number" id="age" name="age" value="{{ user.age or '' }}" min="10" max="120" required></div>
+                    <div class="form-group"><label for="gender">Gender</label><select id="gender" name="gender" required><option value="male" {% if user.gender=='male' %}selected{% endif %}>Male</option><option value="female" {% if user.gender=='female' %}selected{% endif %}>Female</option><option value="other" {% if user.gender=='other' %}selected{% endif %}>Other</option></select></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label for="height">Height (cm)</label><input type="number" id="height" name="height" value="{{ user.height or '' }}" step="0.1" required></div>
+                    <div class="form-group"><label for="weight">Weight (kg)</label><input type="number" id="weight" name="weight" value="{{ user.weight or '' }}" step="0.1" required></div>
+                </div>
+                <div class="form-group"><label for="goal_weight">Goal Weight (kg)</label><input type="number" id="goal_weight" name="goal_weight" value="{{ user.goal_weight or '' }}" step="0.1" required></div>
+                <div class="form-group"><label for="diet_preference">Diet Preference</label><select id="diet_preference" name="diet_preference" required><option value="balanced" {% if user.diet_preference=='balanced' %}selected{% endif %}>Balanced</option><option value="vegetarian" {% if user.diet_preference=='vegetarian' %}selected{% endif %}>Vegetarian</option><option value="vegan" {% if user.diet_preference=='vegan' %}selected{% endif %}>Vegan</option><option value="keto" {% if user.diet_preference=='keto' %}selected{% endif %}>Keto</option><option value="low_carb" {% if user.diet_preference=='low_carb' %}selected{% endif %}>Low Carb</option><option value="low_fat" {% if user.diet_preference=='low_fat' %}selected{% endif %}>Low Fat</option></select></div>
+                <div class="form-group"><label for="medical_conditions">Medical Conditions</label><input type="text" id="medical_conditions" name="medical_conditions" value="{{ user.medical_conditions or '' }}"></div>
+                <div class="form-group"><label for="past_surgeries">Past Surgeries</label><input type="text" id="past_surgeries" name="past_surgeries" value="{{ user.past_surgeries or '' }}"></div>
+            </div>
+
+            <div class="form-actions" style="margin-top: 2rem; display: flex; gap: 1rem;">
+                <button type="button" id="editBtn" class="btn btn-primary">Edit Profile</button>
+                <button type="submit" id="saveBtn" class="btn btn-primary" style="display: none;">Save Changes</button>
+                <button type="button" id="cancelBtn" class="btn" style="display: none; background-color: var(--border-color);">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const editBtn = document.getElementById('editBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const viewMode = document.getElementById('viewMode');
+        const editMode = document.getElementById('editMode');
+        const profileForm = document.getElementById('profileForm');
+        const photoUploadBtn = document.querySelector('label[for="profile-photo-input"]');
+        const photoInput = document.getElementById('profile-photo-input');
+        const profilePreview = document.getElementById('profile-preview');
+
+        editBtn.addEventListener('click', function () {
+            viewMode.style.display = 'none';
+            editMode.style.display = 'block';
+            editBtn.style.display = 'none';
+            saveBtn.style.display = 'inline-block';
+            cancelBtn.style.display = 'inline-block';
+            photoUploadBtn.style.display = 'inline-block';
+        });
+
+        cancelBtn.addEventListener('click', function () {
+            viewMode.style.display = 'block';
+            editMode.style.display = 'none';
+            editBtn.style.display = 'inline-block';
+            saveBtn.style.display = 'none';
+            cancelBtn.style.display = 'none';
+            photoUploadBtn.style.display = 'none';
+            profileForm.reset();
+        });
+
+        photoInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    profilePreview.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+                profileForm.submit();
+            }
+        });
+    });
+</script>
+{% endblock %}

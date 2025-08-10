@@ -1,0 +1,33 @@
+<nav class="sidebar">
+    <a href="{{ url_for('dashboard') }}" class="sidebar-header">
+        <i class="fas fa-heartbeat"></i>
+        <span>FitTrack Pro</span>
+    </a>
+
+    <div class="nav-links">
+        <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{{ url_for('profile') }}" class="nav-link {% if request.endpoint == 'profile' %}active{% endif %}">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+        <a href="{{ url_for('log_meal') }}" class="nav-link {% if request.endpoint == 'log_meal' %}active{% endif %}">
+            <i class="fas fa-utensils"></i>
+            <span>Log Meal</span>
+        </a>
+        <a href="{{ url_for('log_workout') }}" class="nav-link {% if request.endpoint == 'log_workout' %}active{% endif %}">
+            <i class="fas fa-dumbbell"></i>
+            <span>Log Workout</span>
+        </a>
+        <a href="{{ url_for('log_weight') }}" class="nav-link {% if request.endpoint == 'log_weight' %}active{% endif %}">
+            <i class="fas fa-weight-hanging"></i>
+            <span>Log Weight</span>
+        </a>
+        <a href="{{ url_for('logout') }}" class="nav-link logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+</nav>

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Log Workout{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Log a Workout</h1>
+    <p class="subtitle">Describe your workout to get an estimated calorie burn.</p>
+</div>
+
+<div class="log-page-grid">
+    <div class="card">
+        <form method="POST">
+            <div class="form-group">
+                <label for="description">Describe your workout and duration</label>
+                <div style="display: flex; gap: 1rem;">
+                    <input type="text" id="description" name="description" placeholder="e.g., Running for 30 minutes" required style="flex-grow: 1;">
+                    <button type="button" id="calculateBtn" class="btn btn-secondary">Calculate</button>
+                </div>
+                <small>The AI will estimate the calories burned based on your description.</small>
+            </div>
+            
+            <hr>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="calories_burned">Calories Burned (kcal)</label>
+                    <input type="number" id="calories_burned" name="calories_burned" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="duration">Duration (minutes)</label>
+                    <input type="number" id="duration" name="duration" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="type">Workout Type</label>
+                <select id="type" name="type" required>
+                    <option value="Cardio">Cardio</option>
+                    <option value="Strength">Strength Training</option>
+                    <option value="Flexibility">Flexibility</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">Notes (optional)</label>
+                <textarea id="notes" name="notes" rows="3" placeholder="How did you feel? Any PBs?"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Log Workout</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Recent Workouts</h2>
+        <ul class="log-history-list">
+            {% if recent_workouts %}
+                {% for workout in recent_workouts %}
+                <li class="log-history-item">
+                    <div class="log-history-details">
+                        <span class="log-history-name">{{ workout.type }}</span>
+                        <span class="log-history-info">{{ workout.duration }} mins</span>
+                    </div>
+                    <span class="log-history-calories">-{{ workout.calories_burned|int }} kcal</span>
+                </li>
+                {% endfor %}
+            {% else %}
+                <p>You haven't logged any workouts recently.</p>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const calculateBtn = document.getElementById('calculateBtn');
+    const descriptionInput = document.getElementById('description');
+    const caloriesInput = document.getElementById('calories_burned');
+
+    calculateBtn.addEventListener('click', async function() {
+        const description = descriptionInput.value;
+        if (!description) {
+            alert('Please describe your workout first.');
+            return;
+        }
+
+        // Add a loading state to the button
+        calculateBtn.textContent = 'Calculating...';
+        calculateBtn.disabled = true;
+
+        try {
+            const response = await fetch('/api/get-workout-calories', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ description: description })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                caloriesInput.value = result.data.calories_burned;
+            } else {
+                alert('Error: ' + result.error);
+            }
+        } catch (error) {
+            console.error('Network Error:', error);
+            alert('A network error occurred. Please try again.');
+        } finally {
+            // Restore button state
+            calculateBtn.textContent = 'Calculate';
+            calculateBtn.disabled = false;
+        }
+    });
+});
+</script>
+{% endblock %}

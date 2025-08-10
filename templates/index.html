@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to FitTrack Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body>
+    <header class="landing-header">
+        <div class="logo">
+            <i class="fas fa-heartbeat"></i>
+            <span>FitTrack Pro</span>
+        </div>
+        <nav>
+            <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
+            <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Your Personal Health Companion</h1>
+            <p>Track your diet, exercise, and progress with intelligent insights.</p>
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">Start Your Journey</a>
+        </section>
+
+        <section class="features">
+            <h2>Everything You Need</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Smart Meal Logging</h3>
+                    <p>Log your meals with our AI-powered nutrition analysis.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-dumbbell"></i>
+                    <h3>Workout Tracking</h3>
+                    <p>Log workouts with automatic calorie burn estimation.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Progress Monitoring</h3>
+                    <p>Track weight, measurements, and progress photos.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-robot"></i>
+                    <h3>AI Recommendations</h3>
+                    <p>Get personalized meal and workout suggestions.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="landing-footer">
+        <p>&copy; 2025 FitTrack Pro. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
