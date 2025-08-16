@@ -1,12 +1,12 @@
 import os
-import groq
+from groq import Groq
 from datetime import datetime, timedelta
 from config import Config
 from database import db
 import json
 import markdown2
 
-client = groq.Client(api_key=Config.GROQ_API_KEY)
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def get_recent_meals(user_id):
     """Helper function to get meals from the database."""
