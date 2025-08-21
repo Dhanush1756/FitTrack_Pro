@@ -18,9 +18,9 @@ FitTracker is a full-stack fitness tracking web application built with Flask, My
 - 🧘 Mindfulness features (meditation, rest day advice)
 - 📈 AI Alerts for calorie/eating trends
 
-## 📸 Screenshots
-
-(Add screenshots of the dashboard, diet recommendation, etc.)
+## 🎥 Demo Video  
+Here’s a quick walkthrough of FitTracker:  
+👉 [Watch Demo](https://drive.google.com/file/d/1YUKWXffrixS-RjBDMRg0fkvRch3ym23U/view?usp=sharing)
 
 ## 🛠️ Tech Stack
 
