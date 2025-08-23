@@ -40,8 +40,9 @@ Here’s a quick walkthrough of FitTracker:
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/Dhanush1756/FitTrackPro.git
+git clone https://github.com/Dhanush1756/FitTrackPro.git fitness-tracker
 cd fitness-tracker
+
 ```
 
 2. **Create a virtual environment**
